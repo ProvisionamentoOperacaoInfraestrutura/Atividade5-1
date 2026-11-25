@@ -1,0 +1,31 @@
+# Memory bound: aloca um vetor de long a cada requisição (8 bytes por elemento).
+# É a aplicação que mais usa memória, então recebe a maior fatia de RAM.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memory-bound
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memory-bound
+  template:
+    metadata:
+      labels:
+        app: memory-bound
+    spec:
+      containers:
+        - name: memory-bound
+          image: miguelolivrd/memory_bound:v1
+          ports:
+            - containerPort: 8084
+          # requests = recursos garantidos (reservados) para o pod
+          # limits   = máximo que o pod pode usar (CPU: fica lento; memória: pod é reiniciado)
+          # CPU em vCPUs (0.25 = 1/4 de núcleo); memória em Mi (~MB)
+          resources:
+            requests:
+              cpu: "0.25"
+              memory: 512Mi
+            limits:
+              cpu: "0.5"
+              memory: 1Gi

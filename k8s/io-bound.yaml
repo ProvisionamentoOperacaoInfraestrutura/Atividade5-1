@@ -1,0 +1,31 @@
+# IO bound: lê um arquivo de 100 MB direto do disco (O_DIRECT).
+# O gargalo é o disco, não CPU nem RAM, então recebe pouco dos dois.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: io-bound
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: io-bound
+  template:
+    metadata:
+      labels:
+        app: io-bound
+    spec:
+      containers:
+        - name: io-bound
+          image: miguelolivrd/io_bound:v1
+          ports:
+            - containerPort: 8084
+          # requests = recursos garantidos (reservados) para o pod
+          # limits   = máximo que o pod pode usar (CPU: fica lento; memória: pod é reiniciado)
+          # CPU em vCPUs (0.25 = 1/4 de núcleo); memória em Mi (~MB)
+          resources:
+            requests:
+              cpu: "0.25"
+              memory: 256Mi
+            limits:
+              cpu: "0.5"
+              memory: 512Mi
