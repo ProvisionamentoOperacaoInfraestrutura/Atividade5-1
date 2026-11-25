@@ -25,15 +25,15 @@ criar() {
   local app=$1 porta_lb=$2 porta_vm=$3
 
   esperar_lb
-  openstack loadbalancer listener create --name "listener-$app" \
+  openstack loadbalancer listener create --name "listener-$app-grupo-5" \
     --protocol TCP --protocol-port "$porta_lb" "$LB_NAME"
 
   esperar_lb
-  openstack loadbalancer pool create --name "pool-$app" \
+  openstack loadbalancer pool create --name "pool-$app-grupo-5" \
     --lb-algorithm ROUND_ROBIN --listener "listener-$app" --protocol TCP
 
   esperar_lb
-  openstack loadbalancer member create --name "member-$app" \
+  openstack loadbalancer member create --name "member-$app-grupo-5" \
     --address "$VM_IP" --protocol-port "$porta_vm" "pool-$app"
 }
 
