@@ -1,0 +1,14 @@
+# Expõe a aplicação io-bound fora do cluster.
+# NodePort abre a porta 30082 no nó do Minikube e encaminha para a porta 8084 do pod.
+apiVersion: v1
+kind: Service
+metadata:
+  name: io-bound
+spec:
+  type: NodePort
+  selector:
+    app: io-bound
+  ports:
+    - port: 8084
+      targetPort: 8084
+      nodePort: 30082

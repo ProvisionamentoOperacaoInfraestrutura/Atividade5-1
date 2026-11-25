@@ -1,0 +1,14 @@
+# Expõe a aplicação cpu-bound fora do cluster.
+# NodePort abre a porta 30081 no nó do Minikube e encaminha para a porta 8084 do pod.
+apiVersion: v1
+kind: Service
+metadata:
+  name: cpu-bound
+spec:
+  type: NodePort
+  selector:
+    app: cpu-bound
+  ports:
+    - port: 8084
+      targetPort: 8084
+      nodePort: 30081
