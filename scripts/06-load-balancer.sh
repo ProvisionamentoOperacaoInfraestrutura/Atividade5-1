@@ -3,9 +3,9 @@
 # Executar na máquina com o openstack CLI (com o openrc carregado), não na VM.
 #
 # Para cada aplicação: listener (porta pública do LB) -> pool -> member (VM:porta do socat)
-#   LB:5001 -> VM:8081 (cpu-bound)
-#   LB:5002 -> VM:8082 (io-bound)
-#   LB:5003 -> VM:8083 (memory-bound)
+#   LB:5101 -> VM:8081 (cpu-bound)
+#   LB:5102 -> VM:8082 (io-bound)
+#   LB:5103 -> VM:8083 (memory-bound)
 #
 # Uso: ./scripts/06-load-balancer.sh <ID_OU_NOME_DO_LB>
 #   (ver com: openstack loadbalancer list)
@@ -38,20 +38,20 @@ criar() {
 
   esperar_lb
   openstack loadbalancer pool create --name "pool-$app-grupo-5" \
-    --lb-algorithm ROUND_ROBIN --listener "listener-$app" --protocol TCP
+    --lb-algorithm ROUND_ROBIN --listener "listener-$app-grupo-5" --protocol TCP
 
   esperar_lb
   openstack loadbalancer member create --name "member-$app-grupo-5" \
-    --address "$VM_IP" --protocol-port "$porta_vm" "pool-$app"
+    --address "$VM_IP" --protocol-port "$porta_vm" "pool-$app-grupo-5"
 }
 
-criar cpu-bound    5001 8081
-criar io-bound     5002 8082
-criar memory-bound 5003 8083
+criar cpu-bound    5101 8081
+criar io-bound     5102 8082
+criar memory-bound 5103 8083
 
 esperar_lb
 VIP=$(openstack loadbalancer show "$LB_NAME" -f value -c vip_address)
 echo
-echo "CPU:    http://$VIP:5001/v1/cpu_bound/primos?enesimo=10000"
-echo "IO:     http://$VIP:5002/v1/io_bound/arquivo"
-echo "Memory: http://$VIP:5003/v1/main/estatisticas?enesimo=10000"
+echo "CPU:    http://$VIP:5101/v1/cpu_bound/primos?enesimo=10000"
+echo "IO:     http://$VIP:5102/v1/io_bound/arquivo"
+echo "Memory: http://$VIP:5103/v1/main/estatisticas?enesimo=10000"
