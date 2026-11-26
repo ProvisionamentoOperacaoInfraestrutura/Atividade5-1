@@ -6,9 +6,17 @@
 #   LB:5001 -> VM:8081 (cpu-bound)
 #   LB:5002 -> VM:8082 (io-bound)
 #   LB:5003 -> VM:8083 (memory-bound)
+#
+# Uso: ./scripts/06-load-balancer.sh <ID_OU_NOME_DO_LB>
+#   (ver com: openstack loadbalancer list)
 set -e
 
-LB_NAME="COLOQUE_O_NOME_DO_LB_AQUI"   # ver com: openstack loadbalancer list
+if [ -z "$1" ]; then
+  echo "Uso: $0 <ID_OU_NOME_DO_LB>"
+  exit 1
+fi
+
+LB_NAME="$1"
 VM_NAME="atv5-grupo5"
 
 VM_IP=$(openstack server show "$VM_NAME" -f value -c addresses | grep -oE '[0-9]+(\.[0-9]+){3}' | head -1)

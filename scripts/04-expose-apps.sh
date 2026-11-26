@@ -18,4 +18,3 @@ nohup socat TCP-LISTEN:8083,fork,reuseaddr TCP:$MINIKUBE_IP:30083 >/dev/null 2>&
 
 sleep 1
 kubectl get services
-
