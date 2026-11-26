@@ -1,5 +1,5 @@
 #!/bin/bash
-# Configura o Load Balancer do OpenStack (Etapa 6).
+# Configura o Load Balancer do OpenStack (Etapa 7).
 # Executar na máquina com o openstack CLI (com o openrc carregado), não na VM.
 #
 # Para cada aplicação: listener (porta pública do LB) -> pool -> member (VM:porta do socat)

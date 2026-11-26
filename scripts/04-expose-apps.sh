@@ -22,7 +22,3 @@ nohup socat TCP-LISTEN:8083,fork,reuseaddr TCP:$MINIKUBE_IP:30083 >/dev/null 2>&
 sleep 1
 kubectl get services
 
-# Teste local
-curl -s "localhost:8081/v1/cpu_bound/primos?enesimo=20"; echo
-curl -s "localhost:8082/v1/io_bound/arquivo"; echo
-curl -s "localhost:8083/v1/main/estatisticas?enesimo=1000"; echo
